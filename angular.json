@@ -1,7 +1,145 @@
 {
   "$schema": "./node_modules/@angular/cli/lib/config/schema.json",
+  "cli": {
+    "analytics": "1d370d57-f11a-429e-8cd7-6a9cebbe9566"
+  },
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-  }
+    "component-style": {
+      "projectType": "library",
+      "root": "projects/component-style",
+      "sourceRoot": "projects/component-style/src",
+      "prefix": "lib",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-angular:ng-packagr",
+          "options": {
+            "project": "projects/component-style/ng-package.json"
+          },
+          "configurations": {
+            "production": {
+              "tsConfig": "projects/component-style/tsconfig.lib.prod.json"
+            },
+            "development": {
+              "tsConfig": "projects/component-style/tsconfig.lib.json"
+            }
+          },
+          "defaultConfiguration": "production"
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "main": "projects/component-style/src/test.ts",
+            "tsConfig": "projects/component-style/tsconfig.spec.json",
+            "karmaConfig": "projects/component-style/karma.conf.js"
+          }
+        }
+      }
+    },
+    "angular-guide-app": {
+      "projectType": "application",
+      "schematics": {
+        "@schematics/angular:component": {
+          "style": "scss"
+        },
+        "@schematics/angular:application": {
+          "strict": true
+        }
+      },
+      "root": "projects/angular-guide-app",
+      "sourceRoot": "projects/angular-guide-app/src",
+      "prefix": "app",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-angular:browser",
+          "options": {
+            "outputPath": "dist/angular-guide-app",
+            "index": "projects/angular-guide-app/src/index.html",
+            "main": "projects/angular-guide-app/src/main.ts",
+            "polyfills": "projects/angular-guide-app/src/polyfills.ts",
+            "tsConfig": "projects/angular-guide-app/tsconfig.app.json",
+            "inlineStyleLanguage": "scss",
+            "assets": [
+              "projects/angular-guide-app/src/favicon.ico",
+              "projects/angular-guide-app/src/assets"
+            ],
+            "styles": [
+              "projects/angular-guide-app/src/styles.scss"
+            ],
+            "scripts": []
+          },
+          "configurations": {
+            "production": {
+              "budgets": [
+                {
+                  "type": "initial",
+                  "maximumWarning": "500kb",
+                  "maximumError": "1mb"
+                },
+                {
+                  "type": "anyComponentStyle",
+                  "maximumWarning": "2kb",
+                  "maximumError": "4kb"
+                }
+              ],
+              "fileReplacements": [
+                {
+                  "replace": "projects/angular-guide-app/src/environments/environment.ts",
+                  "with": "projects/angular-guide-app/src/environments/environment.prod.ts"
+                }
+              ],
+              "outputHashing": "all"
+            },
+            "development": {
+              "buildOptimizer": false,
+              "optimization": false,
+              "vendorChunk": true,
+              "extractLicenses": false,
+              "sourceMap": true,
+              "namedChunks": true
+            }
+          },
+          "defaultConfiguration": "production"
+        },
+        "serve": {
+          "builder": "@angular-devkit/build-angular:dev-server",
+          "configurations": {
+            "production": {
+              "browserTarget": "angular-guide-app:build:production"
+            },
+            "development": {
+              "browserTarget": "angular-guide-app:build:development"
+            }
+          },
+          "defaultConfiguration": "development"
+        },
+        "extract-i18n": {
+          "builder": "@angular-devkit/build-angular:extract-i18n",
+          "options": {
+            "browserTarget": "angular-guide-app:build"
+          }
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "main": "projects/angular-guide-app/src/test.ts",
+            "polyfills": "projects/angular-guide-app/src/polyfills.ts",
+            "tsConfig": "projects/angular-guide-app/tsconfig.spec.json",
+            "karmaConfig": "projects/angular-guide-app/karma.conf.js",
+            "inlineStyleLanguage": "scss",
+            "assets": [
+              "projects/angular-guide-app/src/favicon.ico",
+              "projects/angular-guide-app/src/assets"
+            ],
+            "styles": [
+              "projects/angular-guide-app/src/styles.scss"
+            ],
+            "scripts": []
+          }
+        }
+      }
+    }
+  },
+  "defaultProject": "component-style"
 }
